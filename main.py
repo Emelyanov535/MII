@@ -40,5 +40,19 @@ def table():
                            filled_cells=filled_cells)
 
 
+@app.route('/analyze')
+def analyze():
+    oil_prices_by_country = data.groupby('country')['oil prices'].agg(['min', 'max', 'mean']).reset_index()
+    oil_prices_by_year = data.groupby('year')['oil prices'].agg(['min', 'max', 'mean']).reset_index()
+    unemploymentrate_by_country = data.groupby('country')['unemploymentrate'].agg(['min', 'max', 'mean']).reset_index()
+    unemploymentrate_by_year = data.groupby('year')['unemploymentrate'].agg(['min', 'max', 'mean']).reset_index()
+
+    return render_template('analyze.html',
+                           oil_prices_by_country=oil_prices_by_country,
+                           oil_prices_by_year=oil_prices_by_year,
+                           unemploymentrate_by_country=unemploymentrate_by_country,
+                           unemploymentrate_by_year=unemploymentrate_by_year)
+
+
 if __name__ == "__main__":
     app.run(host="localhost", port=int("5000"))

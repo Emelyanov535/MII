@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Analysis</title>
+</head>
+<body>
+    <h1>Data Analysis</h1>
+
+    <h2>Oil Prices by Country</h2>
+    <p>
+        По проанализированным данным можно сделать вывод, что минимальная цена на нефть наблюдалась в {{ oil_prices_by_country['country'].loc[oil_prices_by_country['min'].idxmin()] }} году, максимальная - в {{ oil_prices_by_country['country'].loc[oil_prices_by_country['max'].idxmax()] }} году. Минимальная средняя цена была в {{ oil_prices_by_country['country'].loc[oil_prices_by_country['mean'].idxmin()] }} году, максимальная - в {{ oil_prices_by_country['country'].loc[oil_prices_by_country['mean'].idxmax()] }} году.
+    </p>
+    <table border="1">
+        <tr>
+            <th>Country</th>
+            <th>Min Price</th>
+            <th>Max Price</th>
+            <th>Mean Price</th>
+        </tr>
+        {% for row in oil_prices_by_country.iterrows() %}
+        <tr>
+            <td>{{ row[1]['country'] }}</td>
+            <td>{{ row[1]['min'] }}</td>
+            <td>{{ row[1]['max'] }}</td>
+            <td>{{ row[1]['mean'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Oil Prices by Year</h2>
+    <p>
+        По проанализированным данным можно сделать вывод, что минимальная цена на нефть наблюдалась в {{ oil_prices_by_year['year'].loc[oil_prices_by_year['min'].idxmin()] }} году, максимальная - в {{ oil_prices_by_year['year'].loc[oil_prices_by_year['max'].idxmax()] }} году. Минимальная средняя цена была в {{ oil_prices_by_year['year'].loc[oil_prices_by_year['mean'].idxmin()] }} году, максимальная - в {{ oil_prices_by_year['year'].loc[oil_prices_by_year['mean'].idxmax()] }} году.
+    </p>
+    <table border="1">
+       <tr>
+            <th>Year</th>
+            <th>Min Price</th>
+            <th>Max Price</th>
+            <th>Mean Price</th>
+        </tr>
+        {% for row in oil_prices_by_year.iterrows() %}
+        <tr>
+            <td>{{ row[1]['year'] }}</td>
+            <td>{{ row[1]['min'] }}</td>
+            <td>{{ row[1]['max'] }}</td>
+            <td>{{ row[1]['mean'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Unemployment Rate by Country</h2>
+    <p>
+        По проанализированным данным можно сделать вывод, что минимальный уровень безработицы наблюдался в {{ unemploymentrate_by_country['country'].loc[unemploymentrate_by_country['min'].idxmin()] }} году, максимальный - в {{ unemploymentrate_by_country['country'].loc[unemploymentrate_by_country['max'].idxmax()] }} году. Минимальный средний уровень безработицы был в {{ unemploymentrate_by_country['country'].loc[unemploymentrate_by_country['mean'].idxmin()] }} году, максимальный - в {{ unemploymentrate_by_country['country'].loc[unemploymentrate_by_country['mean'].idxmax()] }} году.
+    </p>
+    <table border="1">
+        <tr>
+            <th>Country</th>
+            <th>Min Rate</th>
+            <th>Max Rate</th>
+            <th>Mean Rate</th>
+        </tr>
+        {% for row in unemploymentrate_by_country.iterrows() %}
+        <tr>
+            <td>{{ row[1]['country'] }}</td>
+            <td>{{ row[1]['min'] }}</td>
+            <td>{{ row[1]['max'] }}</td>
+            <td>{{ row[1]['mean'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Unemployment Rate by Year</h2>
+    <p>
+        По проанализированным данным можно сделать вывод, что минимальный уровень безработицы наблюдался в {{ unemploymentrate_by_year['year'].loc[unemploymentrate_by_year['min'].idxmin()] }} году, максимальный - в {{ unemploymentrate_by_year['year'].loc[unemploymentrate_by_year['max'].idxmax()] }} году. Минимальный средний уровень безработицы был в {{ unemploymentrate_by_year['year'].loc[unemploymentrate_by_year['mean'].idxmin()] }} году, максимальный - в {{ unemploymentrate_by_year['year'].loc[unemploymentrate_by_year['mean'].idxmax()] }} году.
+    </p>
+    <table border="1">
+         <tr>
+            <th>Year</th>
+            <th>Min Rate</th>
+            <th>Max Rate</th>
+            <th>Mean Rate</th>
+        </tr>
+        {% for row in unemploymentrate_by_year.iterrows() %}
+        <tr>
+            <td>{{ row[1]['year'] }}</td>
+            <td>{{ row[1]['min'] }}</td>
+            <td>{{ row[1]['max'] }}</td>
+            <td>{{ row[1]['mean'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
