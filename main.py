@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request
 import pandas as pd
 
-app = Flask(__name__)
+from generateData import expand_dataset
+from tableFun import dataForTable, groupData, diagramm
 
+app = Flask(__name__)
 data = pd.read_csv('data.csv')
+expand_dataset(data)
+expandedData = pd.read_csv('expanded_data.csv')
 
 
 @app.route('/')
@@ -13,45 +17,53 @@ def index():
 
 @app.route('/table')
 def table():
-    max_rows = max(data.axes[0])
-    max_columns = len(data.axes[1])
-    empty_cells = data.isna().sum().sum()
-    filled_cells = data.count().sum()
-
-    info_df = pd.DataFrame({
-        "Название столбца": data.columns,
-        "Тип данных": data.dtypes,
-    })
-
-    row_from = 1 if request.args.get("row_from") is None else int(request.args.get("row_from")) - 1
-    row_to = 1 if request.args.get("row_to") is None else int(request.args.get("row_to"))
-    column_from = 1 if request.args.get("column_from") is None else int(request.args.get("column_from")) - 1
-    column_to = 1 if request.args.get("column_to") is None else int(request.args.get("column_to"))
-
-    result = data.iloc[row_from:row_to, column_from:column_to]
-
+    fun = dataForTable(data)
     return render_template('table.html',
-                           tables=[result.to_html()],
+                           tables=[fun[0].to_html()],
                            titles=[''],
-                           max_rows=max_rows,
-                           info_df=info_df,
-                           max_columns=max_columns,
-                           empty_cells=empty_cells,
-                           filled_cells=filled_cells)
+                           max_rows=fun[1],
+                           info_df=fun[2],
+                           max_columns=fun[3],
+                           empty_cells=fun[4],
+                           filled_cells=fun[5])
+
+
+@app.route('/tableExpanded')
+def tableExpanded():
+    fun = dataForTable(expandedData)
+    return render_template('table.html',
+                           tables=[fun[0].to_html()],
+                           titles=[''],
+                           max_rows=fun[1],
+                           info_df=fun[2],
+                           max_columns=fun[3],
+                           empty_cells=fun[4],
+                           filled_cells=fun[5])
 
 
 @app.route('/analyze')
 def analyze():
-    oil_prices_by_country = data.groupby('country')['oil prices'].agg(['min', 'max', 'mean']).reset_index()
-    oil_prices_by_year = data.groupby('year')['oil prices'].agg(['min', 'max', 'mean']).reset_index()
-    unemploymentrate_by_country = data.groupby('country')['unemploymentrate'].agg(['min', 'max', 'mean']).reset_index()
-    unemploymentrate_by_year = data.groupby('year')['unemploymentrate'].agg(['min', 'max', 'mean']).reset_index()
-
+    fun = groupData(data)
     return render_template('analyze.html',
-                           oil_prices_by_country=oil_prices_by_country,
-                           oil_prices_by_year=oil_prices_by_year,
-                           unemploymentrate_by_country=unemploymentrate_by_country,
-                           unemploymentrate_by_year=unemploymentrate_by_year)
+                           oil_prices_by_country=fun[0],
+                           oil_prices_by_year=fun[1],
+                           unemploymentrate_by_country=fun[2],
+                           unemploymentrate_by_year=fun[3])
+
+
+@app.route('/analyzeExpanded')
+def analyzeExpanded():
+    fun = groupData(expandedData)
+    return render_template('analyze.html',
+                           oil_prices_by_country=fun[0],
+                           oil_prices_by_year=fun[1],
+                           unemploymentrate_by_country=fun[2],
+                           unemploymentrate_by_year=fun[3])
+
+#
+diagramm(data)
+diagramm(expandedData)
+
 
 
 if __name__ == "__main__":
