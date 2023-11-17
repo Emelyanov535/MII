@@ -1,0 +1,37 @@
+<!-- ... (other HTML code) ... -->
+
+<div align="center">
+    <form id="filterForm">
+        <label for="userInput">Enter a term:</label>
+        <input type="text" id="userInput" name="user_input" required>
+        <button type="button" onclick="applyFilter()">Apply Filter</button>
+    </form>
+    <div id="filterResult"></div>
+</div>
+
+<script>
+    function applyFilter() {
+        var userInput = document.getElementById('userInput').value;
+
+        fetch('/filter', {
+            method: 'POST',
+            body: new URLSearchParams({ 'user_input': userInput }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            var resultDiv = document.getElementById('filterResult');
+            resultDiv.innerHTML = '<p>' + data.result_text + '</p>';
+
+            if (data.kaggle_link) {
+                var kaggleLink = document.createElement('a');
+                kaggleLink.href = data.kaggle_link;
+                kaggleLink.textContent = 'View on Kaggle';
+                resultDiv.appendChild(kaggleLink);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
