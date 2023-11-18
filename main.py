@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import pandas as pd
 
 from BloomFilter import BloomFilter
+from LinearRegression import buildRegression
 from generateData import expand_dataset
 from tableFun import dataForTable, groupData, diagramm
 
@@ -101,6 +102,8 @@ def apply_bloom_filter():
 
         return jsonify({'result_text': result_text, 'kaggle_link': kaggle_link})
 
+
+buildRegression()
 
 if __name__ == "__main__":
     app.run(host="localhost", port=int("5000"))
