@@ -3,6 +3,7 @@ import math
 import numpy as np
 import pandas as pd
 
+from CSV import MyCSV
 from tree.tree import MyTree
 
 
@@ -15,12 +16,6 @@ def count_entr(param: str) -> dict:
     entr = dict(sorted(entr.items(), key=lambda x: x[1], reverse=True))
     return entr
 
-
-class MyCSV:
-    def __init__(self):
-        self.data = pd.read_csv(
-            'data.csv',
-            delimiter=',')
 
 
 
