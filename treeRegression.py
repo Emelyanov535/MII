@@ -23,6 +23,7 @@ class MyCSV:
             delimiter=',')
 
 
+
 my_CSV = MyCSV()
 data = my_CSV.data[['country', 'year', 'oil prices']]
 data = data.sample(frac=1).reset_index(drop=True)
